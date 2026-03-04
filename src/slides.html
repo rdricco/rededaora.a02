@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundamentos Web para Iniciantes</title>
+
+    <!-- 1. PICO.CSS: O framework que cuida do design automaticamente -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+
+    <style>
+        :root {
+            /* Padrão visual do curso */
+            --pico-background-color: #1A0B21;
+            --pico-secondary-background: #110716;
+            --pico-card-background-color: #2D1B36;
+            --pico-form-element-background-color: #2D1B36;
+            --pico-card-sectioning-background-color: #2D1B36;
+            --pico-muted-border-color: #3D264A;
+            --pico-border-color: #3D264A;
+
+            --pico-color: #E0E0E0;
+            --pico-h1-color: #FFFFFF;
+            --pico-h2-color: #FFFFFF;
+            --pico-h3-color: #FFFFFF;
+            --pico-h4-color: #FFFFFF;
+            --pico-h5-color: #FFFFFF;
+            --pico-h6-color: #FFFFFF;
+            --pico-muted-color: #E0E0E0;
+
+            --pico-primary: #59D2FE;
+            --pico-primary-background: #59D2FE;
+            --pico-primary-hover: #008CA4;
+            --pico-primary-hover-background: #008CA4;
+            --pico-primary-focus: rgba(89, 210, 254, 0.25);
+
+            --pico-secondary: #008CA4;
+            --pico-secondary-background: #008CA4;
+            --pico-secondary-hover: #006b7d;
+            --pico-secondary-hover-background: #006b7d;
+
+            /* Adicionais para garantir que elementos estruturais e formulários não fiquem claros */
+            --pico-table-row-stripped-background-color: rgba(45, 27, 54, 0.5);
+            --pico-code-background-color: #0d0611;
+            --pico-mark-background-color: rgba(89, 210, 254, 0.2);
+            --pico-mark-color: #59D2FE;
+            --pico-form-element-active-background-color: #2D1B36;
+            --pico-switch-background-color: #3D264A;
+            --pico-switch-checked-background-color: #59D2FE;
+            --pico-accordion-active-summary-color: #59D2FE;
+            --pico-accordion-close-summary-color: #E0E0E0;
+            --pico-accordion-open-summary-color: #E0E0E0;
+        }
+
+        /* Ondas de rodapé e grafismos */
+        footer.container {
+            position: relative;
+            margin-top: 4rem;
+        }
+
+        footer.container::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="%23008CA4" /><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-23.84V0Z" opacity=".5" fill="%23008CA4" /><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%23008CA4" /></svg>') no-repeat center bottom;
+            background-size: 100% 30px;
+        }
+
+        /* 2. CUSTOMIZAÇÕES PARA O FORMATO DE SLIDES */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            padding-bottom: 100px;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .controls-bar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: var(--pico-background-color);
+            border-top: 1px solid var(--pico-muted-border-color);
+            padding: 15px 0;
+            z-index: 10;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        img {
+            border-radius: var(--pico-border-radius);
+            max-height: 380px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        pre {
+            background-color: #020617;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        kbd {
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ÁREA DOS SLIDES -->
+    <main class="container">
+
+        <!-- Slide 1: Capa -->
+        <article class="slide text-center active">
+            <h1 style="font-size: 3.5rem;">Introdução à Programação Web</h1>
+            <p><strong>Lógica, Estrutura e Estilo</strong></p>
+            <p><small>Navegue usando as setas do teclado ou os botões abaixo.</small></p>
+        </article>
+
+        <!-- Slide 2: Início Bloco 1 -->
+        <article class="slide text-center">
+            <h2 style="font-size: 4rem;">Bloco 1: O Invisível</h2>
+            <p>Como a tecnologia funciona nos bastidores antes de chegar à tela.</p>
+        </article>
+
+        <!-- Slide 3: Conceitos Iniciais -->
+        <article class="slide">
+            <h2 class="text-center">O que é o quê?</h2>
+            <div class="grid">
+                <div>
+                    <h3>Algoritmo</h3>
+                    <p>A receita de bolo. É a sequência lógica de passos para resolver um problema.</p>
+                </div>
+                <div>
+                    <h3>Programação</h3>
+                    <p>O motor (JS). É o que faz o site tomar decisões e reagir ao usuário.</p>
+                </div>
+                <div>
+                    <h3>Marcação</h3>
+                    <p>O esqueleto (HTML). Serve para etiquetar os elementos e dizer o que cada um representa.</p>
+                </div>
+            </div>
+        </article>
+
+        <!-- Slide 4: Origem do Software -->
+        <article class="slide">
+            <h2 class="text-center">De onde vem o software?</h2>
+            <div class="grid">
+                <article>
+                    <h3>Compilados</h3>
+                    <p>O aplicativo já vem pronto e fechado. O computador apenas executa.</p>
+                    <footer><small>Exemplo: Aplicativos baixados no celular.</small></footer>
+                </article>
+                <article>
+                    <h3>Interpretados</h3>
+                    <p>O código é lido e traduzido na hora, linha por linha, pelo navegador.</p>
+                    <footer><small>Exemplo: O site que você está acessando agora.</small></footer>
+                </article>
+            </div>
+        </article>
+
+        <!-- Slide 5: Internet e Nuvem -->
+        <article class="slide">
+            <h2>A Internet e a Nuvem</h2>
+            <div class="grid">
+                <div>
+                    <p>A dinâmica de pedido e resposta:</p>
+                    <ul>
+                        <li><strong>Cliente (Você):</strong> O navegador que solicita a página.</li>
+                        <li><strong>Servidor (Nuvem):</strong> O computador que envia os arquivos solicitados.</li>
+                        <li><strong>Nuvem:</strong> Computadores de terceiros sempre ligados e conectados.</li>
+                    </ul>
+                </div>
+                <div>
+                    <img src="https://picsum.photos/id/1/800/600" alt="[Imagem de um notebook sobre uma mesa]">
+                </div>
+            </div>
+        </article>
+
+        <!-- Slide 6: Início Bloco 2 -->
+        <article class="slide text-center">
+            <h2 style="font-size: 4rem;">Bloco 2: Construindo</h2>
+            <p>Dando nome, hierarquia e volume à nossa estrutura.</p>
+        </article>
+
+        <!-- Slide 7: HTML Semântico -->
+        <article class="slide">
+            <h2 class="text-center">1. HTML Semântico: Nomes aos bois</h2>
+            <p class="text-center">Antes de tudo, precisamos identificar as partes do nosso site:</p>
+            <div class="grid">
+                <article>
+                    <h4><code>&lt;header&gt;</code></h4>
+                    <p>O topo da página (Logo e Menu).</p>
+                </article>
+                <article>
+                    <h4><code>&lt;main&gt;</code></h4>
+                    <p>O conteúdo mais importante.</p>
+                </article>
+                <article>
+                    <h4><code>&lt;footer&gt;</code></h4>
+                    <p>O rodapé (Contatos e Links).</p>
+                </article>
+            </div>
+            <p class="text-center"><small>Isso ajuda buscadores e garante acessibilidade para todos.</small></p>
+        </article>
+
+        <!-- Slide 8: O Navegador e o DOM -->
+        <article class="slide">
+            <h2>2. O Navegador e o DOM</h2>
+            <div class="grid">
+                <div>
+                    <img src="https://picsum.photos/id/28/800/600" alt="[Imagem de uma árvore com raízes]">
+                </div>
+                <div>
+                    <h3>A Árvore de Família</h3>
+                    <p>Após identificar os nomes, o navegador monta uma hierarquia estrutural.</p>
+                    <ul>
+                        <li>O <code>&lt;html&gt;</code> é a raiz de tudo.</li>
+                        <li>O <code>&lt;body&gt;</code> é o ancestral direto.</li>
+                        <li>Tags internas são <strong>filhas</strong> de quem as contém.</li>
+                    </ul>
+                    <p>Essa organização define como os elementos se relacionam entre si.</p>
+                </div>
+            </div>
+        </article>
+
+        <!-- Slide 9: Box Model -->
+        <article class="slide">
+            <h2>3. O Box Model: Tudo é caixa</h2>
+            <div class="grid">
+                <div>
+                    <p>Todo elemento nomeado e organizado ocupa um espaço físico na tela:</p>
+                    <ul>
+                        <li><strong>Conteúdo:</strong> O texto ou imagem.</li>
+                        <li><strong>Padding:</strong> Espaço interno (respiro).</li>
+                        <li><strong>Border:</strong> A moldura da caixa.</li>
+                        <li><strong>Margin:</strong> Distância entre esta e outras caixas.</li>
+                    </ul>
+                </div>
+                <div>
+                    <blockquote style="border: 5px solid var(--pico-primary); padding: 2rem; margin: 1rem;">
+                        <strong>Volume:</strong> O espaço entre este texto e a borda azul é o <strong>Padding</strong>.
+                    </blockquote>
+                </div>
+            </div>
+        </article>
+
+        <!-- Slide 10: Início Bloco 3 -->
+        <article class="slide text-center">
+            <h2 style="font-size: 4rem;">Bloco 3: A Pintura</h2>
+            <p>Usando o CSS para definir cores, estilos e posicionamento.</p>
+        </article>
+
+        <!-- Slide 11: CSS e Seletores -->
+        <article class="slide">
+            <h2 class="text-center">CSS: Estilo e Seletores</h2>
+            <div class="grid">
+                <article>
+                    <h3>Seletor</h3>
+                    <p>Quem será alterado?</p>
+                    <kbd>h1</kbd>
+                </article>
+                <article>
+                    <h3>Propriedade</h3>
+                    <p>O que será alterado?</p>
+                    <kbd>color</kbd>
+                </article>
+                <article>
+                    <h3>Valor</h3>
+                    <p>Como será a alteração?</p>
+                    <kbd>blue</kbd>
+                </article>
+            </div>
+        </article>
+
+        <!-- Slide 12: Flexbox vs Grid -->
+        <article class="slide">
+            <h2 class="text-center">Flexbox vs. Grid</h2>
+            <div class="grid">
+                <div>
+                    <h3>lexbox (O Elástico)</h3>
+                    <p>Ideal para organizar itens em uma única direção (como uma barra de menu).</p>
+                </div>
+                <div>
+                    <h3>Grid (A Estante)</h3>
+                    <p>Ideal para criar grades complexas de colunas e linhas (como uma galeria).</p>
+                </div>
+            </div>
+        </article>
+
+        <!-- Slide 13: DESAFIO FINAL (CONSTRUÇÃO LIVRE) -->
+        <article class="slide">
+            <h2>Missão: Construção Livre</h2>
+            <div class="grid">
+                <div>
+                    <h3>O Desafio:</h3>
+                    <ul>
+                        <li>Crie a estrutura base com <code>header</code>, <code>main</code> e <code>footer</code>.</li>
+                        <li>Use o CSS para colorir e dar <code>padding</code> às seções.</li>
+                        <li><strong>Explore:</strong> Adicione títulos, textos, links ou listas dentro de cada parte.
+                        </li>
+                        <li>Tente usar uma <strong>Classe</strong> para destacar um elemento específico.</li>
+                    </ul>
+                </div>
+                <div>
+                    <p><strong>Dica de Estrutura:</strong></p>
+                    <pre><code>&lt;header&gt;
+  &lt;h1&gt;Meu Portfólio&lt;/h1&gt;
+&lt;/header&gt;
+
+&lt;main&gt;
+  &lt;p&gt;Sobre mim...&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Projeto 1&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/main&gt;</code></pre>
+                </div>
+            </div>
+        </article>
+
+    </main>
+
+    <!-- BARRA DE NAVEGAÇÃO -->
+    <div class="controls-bar">
+        <nav class="container">
+            <ul>
+                <li><button class="secondary outline" onclick="prevSlide()">Anterior</button></li>
+            </ul>
+            <ul>
+                <li><strong id="slide-counter">1 / 13</strong></li>
+            </ul>
+            <ul>
+                <li><button class="primary" onclick="nextSlide()">Próximo</button></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- LÓGICA DE CONTROLE -->
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const counter = document.getElementById('slide-counter');
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+
+            if (index >= slides.length) currentSlide = 0;
+            if (index < 0) currentSlide = slides.length - 1;
+
+            slides[currentSlide].classList.add('active');
+            counter.textContent = `${currentSlide + 1} / ${slides.length}`;
+
+            window.scrollTo(0, 0);
+        }
+
+        function nextSlide() { currentSlide++; showSlide(currentSlide); }
+        function prevSlide() { currentSlide--; showSlide(currentSlide); }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material de Apoio: Flexbox e Grid</title>
+
+    <!-- Pico.css: Base visual do curso -->
+    <link id="theme-link" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+
+    <style id="custom-style">
+        :root {
+            /* Padrão visual do curso - Rede Daora Aula 02 */
+            --pico-background-color: #1A0B21;
+            --pico-secondary-background: #110716;
+            --pico-card-background-color: #2D1B36;
+            --pico-form-element-background-color: #2D1B36;
+            --pico-card-sectioning-background-color: #2D1B36;
+            --pico-muted-border-color: #3D264A;
+            --pico-border-color: #3D264A;
+
+            --pico-color: #E0E0E0;
+            --pico-h1-color: #FFFFFF;
+            --pico-h2-color: #FFFFFF;
+            --pico-h3-color: #FFFFFF;
+            --pico-h4-color: #FFFFFF;
+            --pico-h5-color: #FFFFFF;
+            --pico-h6-color: #FFFFFF;
+            --pico-muted-color: #E0E0E0;
+
+            --pico-primary: #59D2FE;
+            --pico-primary-background: #59D2FE;
+            --pico-primary-hover: #008CA4;
+            --pico-primary-hover-background: #008CA4;
+            --pico-primary-focus: rgba(89, 210, 254, 0.25);
+
+            --pico-secondary: #008CA4;
+            --pico-secondary-background: #008CA4;
+            --pico-secondary-hover: #006b7d;
+            --pico-secondary-hover-background: #006b7d;
+
+            /* Adicionais para garantir que elementos estruturais e formulários não fiquem claros */
+            --pico-table-row-stripped-background-color: rgba(45, 27, 54, 0.5);
+            --pico-code-background-color: #0d0611;
+            --pico-mark-background-color: rgba(89, 210, 254, 0.2);
+            --pico-mark-color: #59D2FE;
+            --pico-form-element-active-background-color: #2D1B36;
+            --pico-switch-background-color: #3D264A;
+            --pico-switch-checked-background-color: #59D2FE;
+            --pico-accordion-active-summary-color: #59D2FE;
+            --pico-accordion-close-summary-color: #E0E0E0;
+            --pico-accordion-open-summary-color: #E0E0E0;
+        }
+
+        /* Ondas de rodapé e grafismos */
+        footer.container {
+            position: relative;
+            margin-top: 4rem;
+        }
+
+        footer.container::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="%23008CA4" /><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-23.84V0Z" opacity=".5" fill="%23008CA4" /><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%23008CA4" /></svg>') no-repeat center bottom;
+            background-size: 100% 30px;
+        }
+
+        body {
+            scroll-behavior: smooth;
+            padding-top: 2rem;
+            padding-bottom: 4rem;
+        }
+
+        .header-aula {
+            text-align: center;
+            margin-bottom: 3rem;
+            border-bottom: 2px solid var(--pico-muted-border-color);
+            padding-bottom: 2rem;
+        }
+
+        .dica-daora {
+            border-left: 4px solid var(--pico-primary);
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            background: var(--pico-card-sectioning-background-color);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* --- ESTILOS DOS LABORATÓRIOS --- */
+        .demo-area {
+            background: rgba(15, 23, 42, 0.5);
+            border: 2px dashed var(--pico-muted-border-color);
+            padding: 1rem;
+            border-radius: 12px;
+            min-height: 250px;
+            transition: all 0.3s ease;
+        }
+
+        .item-visual {
+            background: var(--pico-primary);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .controls {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #334155;
+        }
+
+        .code-block {
+            border: 1px solid #334155;
+            background: #020617;
+            border-radius: 8px;
+            margin-top: 1rem;
+            padding: 1rem;
+        }
+
+        pre {
+            background: transparent !important;
+            margin: 0;
+            font-size: 0.85rem;
+            color: #38bdf8 !important;
+        }
+
+        .css-prop {
+            color: #f472b6;
+        }
+
+        .css-val {
+            color: #a3e635;
+        }
+
+        nav.sticky-subnav {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: var(--pico-background-color);
+            border-bottom: 1px solid var(--pico-border-color);
+            margin-bottom: 2rem;
+        }
+
+        /* Estilos específicos para o exemplo combinado */
+        .layout-misto {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            gap: 10px;
+            height: 300px;
+            width: 100%;
+            background: #020617;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .misto-header {
+            background: #334155;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 4px;
+        }
+
+        .misto-nav {
+            display: flex;
+            gap: 15px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .misto-nav li {
+            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .misto-main {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .misto-footer {
+            background: #1e293b;
+            padding: 5px;
+            text-align: center;
+            font-size: 0.7rem;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="container">
+        <div class="header-aula">
+            <h1>Arquitetura de Layout: Flexbox e Grid</h1>
+            <p>Dominando o posicionamento de elementos na página web.</p>
+        </div>
+
+        <nav>
+            <ul>
+                <li>
+                    <button id="toggle-css-btn" class="outline secondary" onclick="toggleCSS()"
+                        style="margin-bottom: 0; font-size: 0.8rem; padding: 5px 10px;">
+                        Desativar Design (CSS)
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <nav class="container sticky-subnav">
+        <ul>
+            <li><a href="#conceito" class="secondary">O Conceito</a></li>
+            <li><a href="#flexbox" class="secondary">Flexbox (1D)</a></li>
+            <li><a href="#grid" class="secondary">Grid (2D)</a></li>
+            <li><a href="#combinado" class="secondary">Uso Conjunto</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+
+        <!-- SEÇÃO 1: CONCEITO -->
+        <section id="conceito">
+            <h3>A Necessidade de um Sistema de Layout</h3>
+            <p>Antigamente, organizar elementos em um site era uma tarefa complexa que exigia truques técnicos. Hoje, o
+                CSS possui dois sistemas oficiais para resolver isso:</p>
+
+            <div class="grid">
+                <article>
+                    <header><strong>Unidimensional (Linha ou Coluna)</strong></header>
+                    <p>O foco é organizar itens em uma única direção por vez. Ideal para componentes menores.</p>
+                    <footer>Conhecido como: <strong>Flexbox</strong>.</footer>
+                </article>
+                <article>
+                    <header><strong>Bidimensional (Grade Completa)</strong></header>
+                    <p>O foco é organizar itens em linhas e colunas simultaneamente. Ideal para a estrutura total da
+                        página.</p>
+                    <footer>Conhecido como: <strong>Grid Layout</strong>.</footer>
+                </article>
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- SEÇÃO 2: FLEXBOX -->
+        <section id="flexbox">
+            <h3>Flexbox: O Sistema Elástico</h3>
+            <p>Imagine uma corda elástica onde você pendura itens. Você pode esticar a corda, empurrar os itens para as
+                pontas ou centralizá-los com facilidade.</p>
+
+            <div class="grid">
+                <div>
+                    <div class="controls">
+                        <label for="flex-jc">Justify Content (Eixo Principal)</label>
+                        <select id="flex-jc" onchange="updateFlex()">
+                            <option value="flex-start">flex-start (Início)</option>
+                            <option value="center">center (Centro)</option>
+                            <option value="flex-end">flex-end (Fim)</option>
+                            <option value="space-between">space-between (Espaçado)</option>
+                            <option value="space-around">space-around (Ao redor)</option>
+                        </select>
+
+                        <label for="flex-ai">Align Items (Eixo Transversal)</label>
+                        <select id="flex-ai" onchange="updateFlex()">
+                            <option value="stretch">stretch (Esticar)</option>
+                            <option value="center">center (Centro)</option>
+                            <option value="flex-start">flex-start (Topo)</option>
+                            <option value="flex-end">flex-end (Base)</option>
+                        </select>
+
+                        <label for="flex-gap">Espaçamento (Gap): <span id="val-flex-gap">10px</span></label>
+                        <input type="range" id="flex-gap" min="0" max="50" value="10" oninput="updateFlex()">
+                    </div>
+
+                    <div class="code-block">
+                        <pre>.container {
+  <span class="css-prop">display</span>: flex;
+  <span class="css-prop">justify-content</span>: <span class="css-val" id="code-flex-jc">flex-start</span>;
+  <span class="css-prop">align-items</span>: <span class="css-val" id="code-flex-ai">stretch</span>;
+  <span class="css-prop">gap</span>: <span class="css-val" id="code-flex-gap">10px</span>;
+}</pre>
+                    </div>
+                </div>
+
+                <div class="demo-area" id="demo-flex"
+                    style="display: flex; justify-content: flex-start; align-items: stretch; gap: 10px;">
+                    <div class="item-visual">1</div>
+                    <div class="item-visual">2</div>
+                    <div class="item-visual">3</div>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- SEÇÃO 3: GRID -->
+        <section id="grid">
+            <h3>Grid: A Estante de Livros</h3>
+            <p>Diferente do Flexbox, o Grid permite criar divisórias fixas de colunas e linhas, como se fosse uma
+                estante onde cada item tem seu lugar exato.</p>
+
+            <div class="grid">
+                <div>
+                    <div class="controls">
+                        <label for="grid-cols">Quantidade de Colunas: <span id="val-grid-cols">3</span></label>
+                        <input type="range" id="grid-cols" min="1" max="5" value="3" oninput="updateGrid()">
+
+                        <label for="grid-gap">Espaçamento entre Células (Gap): <span
+                                id="val-grid-gap">15px</span></label>
+                        <input type="range" id="grid-gap" min="0" max="50" value="15" oninput="updateGrid()">
+                    </div>
+
+                    <div class="code-block">
+                        <pre>.container {
+  <span class="css-prop">display</span>: grid;
+  <span class="css-prop">grid-template-columns</span>: <span class="css-val" id="code-grid-cols">repeat(3, 1fr)</span>;
+  <span class="css-prop">gap</span>: <span class="css-val" id="code-grid-gap">15px</span>;
+}</pre>
+                    </div>
+                </div>
+
+                <div class="demo-area" id="demo-grid"
+                    style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                    <div class="item-visual" style="background: #fbbf24; color: black;">A</div>
+                    <div class="item-visual" style="background: #fbbf24; color: black;">B</div>
+                    <div class="item-visual" style="background: #fbbf24; color: black;">C</div>
+                    <div class="item-visual" style="background: #fbbf24; color: black;">D</div>
+                    <div class="item-visual" style="background: #fbbf24; color: black;">E</div>
+                    <div class="item-visual" style="background: #fbbf24; color: black;">F</div>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- SEÇÃO 4: USO CONJUNTO -->
+        <section id="combinado">
+            <h3>Uso Conjunto: O Melhor dos Dois Mundos</h3>
+            <p>Na prática, utilizamos o <strong>Grid</strong> para a estrutura geral da página e o
+                <strong>Flexbox</strong> para alinhar os elementos dentro de cada parte.
+            </p>
+
+            <div class="grid">
+                <div>
+                    <p>Observe o exemplo ao lado:</p>
+                    <ol>
+                        <li>O <strong>Grid</strong> define as 3 linhas (Header, Main, Footer).</li>
+                        <li>O <strong>Flexbox</strong> organiza o Logo e o Menu dentro do Header.</li>
+                    </ol>
+                    <div class="code-block">
+                        <pre>/* Estrutura da Página (GRID) */
+.pagina {
+  <span class="css-prop">display</span>: grid;
+  <span class="css-prop">grid-template-rows</span>: auto 1fr auto;
+}
+
+/* Itens Internos (FLEX) */
+.header {
+  <span class="css-prop">display</span>: flex;
+  <span class="css-prop">justify-content</span>: space-between;
+}</pre>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="layout-misto">
+                        <header class="misto-header">
+                            <span style="font-weight: bold; color: var(--pico-primary);">LOGO</span>
+                            <ul class="misto-nav">
+                                <li>Início</li>
+                                <li>Fotos</li>
+                                <li>Contato</li>
+                            </ul>
+                        </header>
+                        <main class="misto-main">
+                            <small>Conteúdo Principal (Grid Row 2)</small>
+                        </main>
+                        <footer class="misto-footer">
+                            Rodapé da Página
+                        </footer>
+                    </div>
+                    <p class="text-center"><small>Simulação de um layout real de site.</small></p>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- SEÇÃO 5: QUAL ESCOLHER -->
+        <section id="comparativo">
+            <h3>Qual sistema devo escolher?</h3>
+            <p>Não existe um sistema melhor que o outro, mas sim ferramentas diferentes para objetivos diferentes.</p>
+
+            <figure>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Característica</th>
+                            <th>Flexbox</th>
+                            <th>Grid</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Dimensão</td>
+                            <td>Unidimensional (1D)</td>
+                            <td>Bidimensional (2D)</td>
+                        </tr>
+                        <tr>
+                            <td>Melhor uso</td>
+                            <td>Alinhamento de itens (menus, botões).</td>
+                            <td>Estrutura total da página (seções, grades).</td>
+                        </tr>
+                        <tr>
+                            <td>Alinhamento</td>
+                            <td>Baseado no conteúdo interno.</td>
+                            <td>Baseado no espaço externo definido.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </figure>
+
+            <div class="dica-daora">
+                <strong>Dica de Mercado:</strong> Inicie o projeto definindo o esqueleto com <strong>Grid</strong> e
+                utilize o <strong>Flexbox</strong> para os detalhes. Isso garante um código muito mais organizado e
+                fácil de manter.
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="container">
+        <hr>
+        <div class="grid">
+            <div><small>Manual de Autonomia Digital</small></div>
+            <div style="text-align: right;"><small>2026 • Polo Audiovisual - Casa de Cultura do Butantã</small></div>
+        </div>
+    </footer>
+
+    <script>
+        function updateFlex() {
+            const jc = document.getElementById('flex-jc').value;
+            const ai = document.getElementById('flex-ai').value;
+            const gap = document.getElementById('flex-gap').value;
+            const container = document.getElementById('demo-flex');
+
+            container.style.justifyContent = jc;
+            container.style.alignItems = ai;
+            container.style.gap = gap + 'px';
+
+            document.getElementById('val-flex-gap').innerText = gap + 'px';
+            document.getElementById('code-flex-jc').innerText = jc;
+            document.getElementById('code-flex-ai').innerText = ai;
+            document.getElementById('code-flex-gap').innerText = gap + 'px';
+        }
+
+        function updateGrid() {
+            const cols = document.getElementById('grid-cols').value;
+            const gap = document.getElementById('grid-gap').value;
+            const container = document.getElementById('demo-grid');
+
+            const gridTemplate = `repeat(${cols}, 1fr)`;
+            container.style.gridTemplateColumns = gridTemplate;
+            container.style.gap = gap + 'px';
+
+            document.getElementById('val-grid-cols').innerText = cols;
+            document.getElementById('val-grid-gap').innerText = gap + 'px';
+            document.getElementById('code-grid-cols').innerText = gridTemplate;
+            document.getElementById('code-grid-gap').innerText = gap + 'px';
+        }
+
+        function toggleCSS() {
+            const picoLink = document.getElementById('theme-link');
+            const customStyle = document.getElementById('custom-style');
+            const btn = document.getElementById('toggle-css-btn');
+
+            if (picoLink.disabled) {
+                picoLink.disabled = false;
+                customStyle.disabled = false;
+                btn.textContent = "Desativar Design (CSS)";
+                btn.classList.add('outline');
+                btn.classList.remove('primary');
+            } else {
+                picoLink.disabled = true;
+                customStyle.disabled = true;
+                btn.textContent = "Ativar Design (CSS)";
+                btn.classList.remove('outline');
+                btn.classList.add('primary');
+            }
+        }
+    </script>
+</body>
+
+</html>

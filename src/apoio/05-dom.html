@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material de Apoio: O Navegador e o DOM</title>
+
+    <!-- Pico.css para o visual limpo e bonito -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+
+    <style>
+        :root {
+            /* Padrão visual do curso - Rede Daora Aula 02 */
+            --pico-background-color: #1A0B21;
+            --pico-secondary-background: #110716;
+            --pico-card-background-color: #2D1B36;
+            --pico-form-element-background-color: #2D1B36;
+            --pico-card-sectioning-background-color: #2D1B36;
+            --pico-muted-border-color: #3D264A;
+            --pico-border-color: #3D264A;
+
+            --pico-color: #E0E0E0;
+            --pico-h1-color: #FFFFFF;
+            --pico-h2-color: #FFFFFF;
+            --pico-h3-color: #FFFFFF;
+            --pico-h4-color: #FFFFFF;
+            --pico-h5-color: #FFFFFF;
+            --pico-h6-color: #FFFFFF;
+            --pico-muted-color: #E0E0E0;
+
+            --pico-primary: #59D2FE;
+            --pico-primary-background: #59D2FE;
+            --pico-primary-hover: #008CA4;
+            --pico-primary-hover-background: #008CA4;
+            --pico-primary-focus: rgba(89, 210, 254, 0.25);
+
+            --pico-secondary: #008CA4;
+            --pico-secondary-background: #008CA4;
+            --pico-secondary-hover: #006b7d;
+            --pico-secondary-hover-background: #006b7d;
+
+            /* Adicionais para garantir que elementos estruturais e formulários não fiquem claros */
+            --pico-table-row-stripped-background-color: rgba(45, 27, 54, 0.5);
+            --pico-code-background-color: #0d0611;
+            --pico-mark-background-color: rgba(89, 210, 254, 0.2);
+            --pico-mark-color: #59D2FE;
+            --pico-form-element-active-background-color: #2D1B36;
+            --pico-switch-background-color: #3D264A;
+            --pico-switch-checked-background-color: #59D2FE;
+            --pico-accordion-active-summary-color: #59D2FE;
+            --pico-accordion-close-summary-color: #E0E0E0;
+            --pico-accordion-open-summary-color: #E0E0E0;
+        }
+
+        /* Ondas de rodapé e grafismos */
+        footer.container {
+            position: relative;
+            margin-top: 4rem;
+        }
+
+        footer.container::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="%23008CA4" /><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-23.84V0Z" opacity=".5" fill="%23008CA4" /><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%23008CA4" /></svg>') no-repeat center bottom;
+            background-size: 100% 30px;
+        }
+
+        body {
+            padding-top: 2rem;
+            padding-bottom: 4rem;
+        }
+
+        .header-aula {
+            text-align: center;
+            margin-bottom: 3rem;
+            border-bottom: 2px solid var(--pico-muted-border-color);
+            padding-bottom: 2rem;
+        }
+
+        .dica {
+            border-left: 4px solid var(--pico-primary-background);
+            padding-left: 1rem;
+            color: var(--pico-muted-color);
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+
+        /* --- ESTILOS DO SIMULADOR INTERATIVO --- */
+        .simulador-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .simulador-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* O Bloco de Código */
+        .codigo-box {
+            background-color: #282c34;
+            color: #abb2bf;
+            padding: 1.5rem;
+            border-radius: var(--pico-border-radius);
+            font-family: monospace;
+            font-size: 1rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            margin: 0;
+        }
+
+        .linha-codigo {
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .linha-codigo:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: #61afef;
+        }
+
+        /* A Árvore Genealógica (DOM) */
+        .dom-tree-box {
+            background-color: var(--pico-form-element-background-color);
+            border: 2px solid var(--pico-muted-border-color);
+            padding: 2rem;
+            border-radius: var(--pico-border-radius);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Estilo das caixinhas da árvore */
+        .no-arvore {
+            background-color: #e2e8f0;
+            color: #1e293b;
+            border: 2px solid #cbd5e1;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: bold;
+            font-family: monospace;
+            text-align: center;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        /* Linhas conectoras improvisadas com bordas */
+        .container-filhos {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #cbd5e1;
+            margin-top: 0.5rem;
+            width: 100%;
+        }
+
+        .coluna {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* O destaque de quando o aluno passa o mouse */
+        .no-arvore.destaque-no {
+            background-color: var(--pico-primary);
+            color: white;
+            border-color: var(--pico-primary);
+            transform: scale(1.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container">
+
+        <header class="header-aula">
+            <h1>O Navegador e o DOM</h1>
+            <p>Conhecendo a Árvore de Família do seu site.</p>
+        </header>
+
+        <!-- SEÇÃO 1: A ANALOGIA -->
+        <section>
+            <h3>A Planta da Casa e o Mestre de Obras </h3>
+            <p>Imagine que você quer construir uma casa. O seu código <strong>HTML</strong> é a planta desenhada no
+                papel. O <strong>Navegador</strong> (Chrome, Edge, Safari) é o mestre de obras.</p>
+
+            <p>Quando o mestre de obras lê a sua planta, ele cria um mapa mental de hierarquia: "A janela fica dentro da
+                parede, que fica dentro do quarto, que fica dentro da casa".</p>
+
+            <p class="dica"> Na web, esse mapa estrutural que define quem é "pai" de quem se chama
+                <strong>DOM</strong> (Document Object Model).
+            </p>
+        </section>
+
+        <hr>
+
+        <!-- SEÇÃO 3: SIMULADOR INTERATIVO -->
+        <section>
+            <h3> Explore a linhagem dos elementos</h3>
+            <p>Passe o mouse por cima do código para ver como o navegador identifica não só o elemento, mas também todos
+                os seus <strong>ancestrais</strong> (pais, avós, etc).</p>
+
+            <div class="simulador-container">
+
+                <!-- Lado Esquerdo: Código HTML -->
+                <div class="codigo-box">
+                    <div class="linha-codigo" onmouseover="destacar('dom-html')" onmouseout="limparDestaque()">
+                        &lt;html&gt;</div>
+
+                    <div style="padding-left: 20px;">
+                        <div class="linha-codigo" onmouseover="destacar('dom-head')" onmouseout="limparDestaque()">
+                            &lt;head&gt;</div>
+                        <div class="linha-codigo" style="padding-left: 20px; color: #5c6370;">&lt;!-- Configurações
+                            --&gt;</div>
+                        <div class="linha-codigo" onmouseover="destacar('dom-head')" onmouseout="limparDestaque()">
+                            &lt;/head&gt;</div>
+                        <br>
+                        <div class="linha-codigo" onmouseover="destacar('dom-body')" onmouseout="limparDestaque()">
+                            &lt;body&gt;</div>
+
+                        <div style="padding-left: 20px;">
+                            <div class="linha-codigo" onmouseover="destacar('dom-header')"
+                                onmouseout="limparDestaque()">&lt;header&gt;</div>
+                            <div style="padding-left: 20px;">
+                                <div class="linha-codigo" onmouseover="destacar('dom-h1')"
+                                    onmouseout="limparDestaque()">&lt;h1&gt;Meu Site&lt;/h1&gt;</div>
+                            </div>
+                            <div class="linha-codigo" onmouseover="destacar('dom-header')"
+                                onmouseout="limparDestaque()">&lt;/header&gt;</div>
+                            <br>
+                            <div class="linha-codigo" onmouseover="destacar('dom-main')" onmouseout="limparDestaque()">
+                                &lt;main&gt;</div>
+                            <div style="padding-left: 20px;">
+                                <div class="linha-codigo" onmouseover="destacar('dom-p')" onmouseout="limparDestaque()">
+                                    &lt;p&gt;Bem-vindo!&lt;/p&gt;</div>
+                            </div>
+                            <div class="linha-codigo" onmouseover="destacar('dom-main')" onmouseout="limparDestaque()">
+                                &lt;/main&gt;</div>
+                        </div>
+
+                        <div class="linha-codigo" onmouseover="destacar('dom-body')" onmouseout="limparDestaque()">
+                            &lt;/body&gt;</div>
+                    </div>
+
+                    <div class="linha-codigo" onmouseover="destacar('dom-html')" onmouseout="limparDestaque()">
+                        &lt;/html&gt;</div>
+                </div>
+
+                <!-- Lado Direito: Representação do DOM -->
+                <div class="dom-tree-box">
+                    <h4>Árvore do DOM</h4>
+
+                    <!-- Nó Raiz -->
+                    <div class="no-arvore" id="dom-html">html</div>
+
+                    <!-- Nível 1 -->
+                    <div class="container-filhos">
+                        <div class="coluna">
+                            <div class="no-arvore" id="dom-head">head</div>
+                        </div>
+                        <div class="coluna">
+                            <div class="no-arvore" id="dom-body">body</div>
+
+                            <!-- Nível 2 -->
+                            <div class="container-filhos" style="gap: 2rem;">
+                                <div class="coluna">
+                                    <div class="no-arvore" id="dom-header">header</div>
+                                    <!-- Nível 3 -->
+                                    <div class="container-filhos" style="border-top: 1px solid #cbd5e1;">
+                                        <div class="no-arvore" id="dom-h1" style="font-size: 0.8rem;">h1</div>
+                                    </div>
+                                </div>
+                                <div class="coluna">
+                                    <div class="no-arvore" id="dom-main">main</div>
+                                    <!-- Nível 3 -->
+                                    <div class="container-filhos" style="border-top: 1px solid #cbd5e1;">
+                                        <div class="no-arvore" id="dom-p" style="font-size: 0.8rem;">p</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+    <footer class="container">
+        <hr>
+        <div class="grid">
+
+            <div style="text-align: right;">
+                <small>2026 • Polo Audiovisual - Casa de Cultura do Butantã</small>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- MOTOR JAVASCRIPT DO SIMULADOR -->
+    <script>
+        // Função para destacar o elemento e todos os seus ancestrais na árvore visual
+        function destacar(id) {
+            // Primeiro, garantimos que qualquer destaque anterior foi limpo
+            limparDestaque();
+
+            let atual = document.getElementById(id);
+
+            // Vamos "subir" na árvore visual enquanto houver um elemento válido
+            while (atual) {
+                // Se for uma caixinha da árvore, destaca
+                if (atual.classList.contains('no-arvore')) {
+                    atual.classList.add('destaque-no');
+                }
+
+                // Lógica para encontrar o "pai lógico" na nossa estrutura de visualização:
+                // 1. Encontra a coluna onde o nó está
+                let colunaPai = atual.closest('.coluna');
+
+                if (colunaPai && colunaPai.parentElement.classList.contains('container-filhos')) {
+                    // 2. Se a coluna está dentro de um container de filhos, 
+                    // o pai real é o nó que é irmão desse container.
+                    atual = colunaPai.parentElement.parentElement.querySelector('.no-arvore');
+                } else if (atual.id !== 'dom-html') {
+                    // 3. Se não achou container de filhos mas não é a raiz, o pai é o <html>
+                    atual = document.getElementById('dom-html');
+                } else {
+                    // 4. Se chegou no html, para de subir
+                    atual = null;
+                }
+            }
+        }
+
+        // Função simples para remover o destaque de todas as caixas de uma vez
+        function limparDestaque() {
+            const todasAsCaixas = document.querySelectorAll('.no-arvore');
+            todasAsCaixas.forEach(caixa => {
+                caixa.classList.remove('destaque-no');
+            });
+        }
+    </script>
+</body>
+
+</html>

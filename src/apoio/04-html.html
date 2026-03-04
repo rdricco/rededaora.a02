@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material de Apoio: HTML</title>
+
+    <!-- PICO.CSS: O design automático que usaremos no curso -->
+    <link id="theme-link" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+
+    <style id="custom-style">
+        :root {
+            /* Padrão visual do curso - Rede Daora Aula 02 */
+            --pico-background-color: #1A0B21;
+            --pico-secondary-background: #110716;
+            --pico-card-background-color: #2D1B36;
+            --pico-form-element-background-color: #2D1B36;
+            --pico-card-sectioning-background-color: #2D1B36;
+            --pico-muted-border-color: #3D264A;
+            --pico-border-color: #3D264A;
+
+            --pico-color: #E0E0E0;
+            --pico-h1-color: #FFFFFF;
+            --pico-h2-color: #FFFFFF;
+            --pico-h3-color: #FFFFFF;
+            --pico-h4-color: #FFFFFF;
+            --pico-h5-color: #FFFFFF;
+            --pico-h6-color: #FFFFFF;
+            --pico-muted-color: #E0E0E0;
+
+            --pico-primary: #59D2FE;
+            --pico-primary-background: #59D2FE;
+            --pico-primary-hover: #008CA4;
+            --pico-primary-hover-background: #008CA4;
+            --pico-primary-focus: rgba(89, 210, 254, 0.25);
+
+            --pico-secondary: #008CA4;
+            --pico-secondary-background: #008CA4;
+            --pico-secondary-hover: #006b7d;
+            --pico-secondary-hover-background: #006b7d;
+
+            /* Adicionais para garantir que elementos estruturais e formulários não fiquem claros */
+            --pico-table-row-stripped-background-color: rgba(45, 27, 54, 0.5);
+            --pico-code-background-color: #0d0611;
+            --pico-mark-background-color: rgba(89, 210, 254, 0.2);
+            --pico-mark-color: #59D2FE;
+            --pico-form-element-active-background-color: #2D1B36;
+            --pico-switch-background-color: #3D264A;
+            --pico-switch-checked-background-color: #59D2FE;
+            --pico-accordion-active-summary-color: #59D2FE;
+            --pico-accordion-close-summary-color: #E0E0E0;
+            --pico-accordion-open-summary-color: #E0E0E0;
+        }
+
+        /* Ondas de rodapé e grafismos */
+        footer.container {
+            position: relative;
+            margin-top: 4rem;
+        }
+
+        footer.container::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="%23008CA4" /><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-23.84V0Z" opacity=".5" fill="%23008CA4" /><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%23008CA4" /></svg>') no-repeat center bottom;
+            background-size: 100% 30px;
+        }
+
+        /* Estilos simples para destacar as tags no text */
+        .tag-name {
+            color: #4f46e5;
+            font-weight: bold;
+            font-family: monospace;
+            background: rgba(79, 70, 229, 0.1);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .invisible-tag {
+            color: #d81b60;
+            font-weight: bold;
+            font-family: monospace;
+        }
+
+        /* Um toque especial nas dicas */
+        .dica-daora {
+            border-left: 4px solid #4f46e5;
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            background: var(--pico-card-sectioning-background-color);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .header-aula {
+            text-align: center;
+            margin-bottom: 3rem;
+            border-bottom: 2px solid var(--pico-muted-border-color);
+            padding-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="container">
+        <div class="header-aula">
+            <h1>Material de Apoio: HTML</h1>
+            <p>Dando nome, significado e organização ao seu projeto.</p>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="#metadados">Metadados</a></li>
+                <li><a href="#estrutura">Estrutura</a></li>
+                <li><a href="#interatividade">Mágicas</a></li>
+                <li><a href="#formatacao">Destaques</a></li>
+                <!-- Botão de controle do CSS -->
+                <li>
+                    <button id="toggle-css-btn" class="outline secondary" onclick="toggleCSS()"
+                        style="margin-bottom: 0; font-size: 0.8rem; padding: 5px 10px;">
+                        Desativar Design (CSS)
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <!-- SEÇÃO 1: METADADOS -->
+        <section id="metadados">
+            <h2>1. Metadados: O Cérebro Invisível</h2>
+            <p>São as configurações que o navegador lê para saber como o seu site deve se comportar. O usuário não vê
+                isso na página, mas sente a diferença.</p>
+
+            <article>
+                <header>A "Cabeça" do Site: <span class="invisible-tag">&lt;head&gt;</span></header>
+                <ul>
+                    <li><span class="invisible-tag">&lt;title&gt;</span>: É o nome que aparece na aba do navegador.</li>
+                    <li><span class="invisible-tag">&lt;meta charset="UTF-8"&gt;</span>: Avisa ao PC que o seu site usa
+                        acentos (á, é, ç). Sem isso, o texto fica todo quebrado!</li>
+                    <li><span class="invisible-tag">&lt;meta name="viewport"&gt;</span>: O comando mágico que faz o site
+                        não ficar minúsculo no celular.</li>
+                </ul>
+            </article>
+
+            <div class="dica-daora">
+                <strong>Dica:</strong> Use sempre o Open Graph (<code>og:image</code>) para que, quando você
+                mandar o link do seu portfólio no WhatsApp, ele apareça com uma foto bonitona em vez de apenas um link
+                cinza.
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- SEÇÃO 2: ESTRUTURA -->
+        <section id="estrutura">
+            <h2>2. As "Caixas" de Significado</h2>
+            <p>Imagine que você está etiquetando as gavetas do seu armário. O HTML semântico faz exatamente isso: diz ao
+                navegador o que tem dentro de cada parte do site.</p>
+
+            <div class="grid">
+                <article>
+                    <header><span class="tag-name">&lt;header&gt;</span></header>
+                    <strong>O Topo:</strong> Gaveta das apresentações. Aqui vai o logo e o menu de navegação.
+                </article>
+                <article>
+                    <header><span class="tag-name">&lt;main&gt;</span></header>
+                    <strong>O Principal:</strong> A gaveta mais importante. Aqui fica o assunto central daquela página.
+                </article>
+                <article>
+                    <header><span class="tag-name">&lt;footer&gt;</span></header>
+                    <strong>O Rodapé:</strong> A gaveta das miudezas. Fica lá embaixo com contatos e redes sociais.
+                </article>
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- SEÇÃO 3: INTERATIVIDADE MODERNA -->
+        <section id="interatividade">
+            <h2>3. Mágica sem Programação</h2>
+            <p>O HTML moderno já vem com "truques" que antes precisavam de muito código difícil. </p>
+
+            <div class="grid">
+                <!-- ACCORDION -->
+                <div>
+                    <h4 class="tag-name">&lt;details&gt; + &lt;summary&gt;</h4>
+                    <p>O jeito mais simples de criar um menu que abre e fecha (estilo perguntas frequentes).</p>
+
+                    <details>
+                        <summary>Clique para ver meus serviços</summary>
+                        <ul>
+                            <li>Edição de Vídeo</li>
+                            <li>Design de Logos</li>
+                        </ul>
+                    </details>
+                </div>
+
+                <!-- DIALOG -->
+                <article>
+                    <header><span class="tag-name">Popovers</span> Nativos</header>
+                    <p>Agora dá para criar janelas que aparecem na frente de tudo sem usar JavaScript!</p>
+                    <button class="outline" popovertarget="meu-modal">Abrir Aviso</button>
+
+                    <div id="meu-modal" popover>
+                        <article>
+                            <header>
+                                <button aria-label="Fechar" rel="prev" popovertarget="meu-modal"
+                                    popovertargetaction="hide"></button>
+                                Janela Nativa!
+                            </header>
+                            <p>Isso aqui funciona até em celulares mais simples, porque é leve e direto do navegador.
+                            </p>
+                        </article>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- SEÇÃO 4: FORMATAÇÃO -->
+        <section id="formatacao">
+            <h2>4. Destaques e Textos Especiais</h2>
+            <p>Como dar ênfase no que realmente importa no seu texto.</p>
+
+            <div class="grid">
+                <article>
+                    <header><span class="tag-name">&lt;mark&gt;</span></header>
+                    Funciona como um marca-texto. Serve para destacar algo que o usuário está procurando.
+                    <p><mark>Exemplo de texto destacado.</mark></p>
+                </article>
+
+                <article>
+                    <header><span class="tag-name">&lt;kbd&gt;</span></header>
+                    Representa uma tecla do teclado. Ótimo para dar instruções.
+                    <p>Pressione <kbd>Enter</kbd> para continuar.</p>
+                </article>
+            </div>
+
+            <div class="dica-daora">
+                <strong>Lembrete:</strong> Use <code>&lt;strong&gt;</code> para coisas importantes e não apenas para
+                deixar o texto gordinho. Para estilo, usaremos o CSS depois!
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="container">
+        <hr>
+        <div class="grid">
+            <div>
+                <small>Manual de Autonomia Digital </small>
+            </div>
+            <div style="text-align: right;">
+                <small>2026 • Polo Audiovisual - Casa de Cultura do Butantã</small>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleCSS() {
+            const picoLink = document.getElementById('theme-link');
+            const customStyle = document.getElementById('custom-style');
+            const btn = document.getElementById('toggle-css-btn');
+
+            if (picoLink.disabled) {
+                // Ativar CSS
+                picoLink.disabled = false;
+                customStyle.disabled = false;
+                btn.textContent = "Desativar Design (CSS)";
+                btn.classList.add('outline');
+                btn.classList.remove('primary');
+            } else {
+                // Desativar CSS
+                picoLink.disabled = true;
+                customStyle.disabled = true;
+                btn.textContent = "Ativar Design (CSS)";
+                btn.classList.remove('outline');
+                btn.classList.add('primary');
+            }
+        }
+    </script>
+
+</body>
+
+</html>
